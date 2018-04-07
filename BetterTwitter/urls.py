@@ -19,6 +19,6 @@ from MyTwitter import views
 
 urlpatterns = [
     url('^admin/', admin.site.urls),
-    url(r'^mytwitter/', include('MyTwitter.urls'))
+    # url(r'^mytwitter/', include('MyTwitter.urls'))
 
 ]
