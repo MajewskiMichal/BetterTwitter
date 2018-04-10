@@ -1,14 +1,23 @@
-<title>
-{% block title %}
+<!DOCTYPE html>
 
-{% endblock %}
-</title>
+<html lang="en">
+
+<head>
+    <title>
+        {% block title %}BetterTwitter.com{% endblock %}
+    </title>
+    {% include 'snippets/css.html' %}
+</head>
+<body>
 
 
+<h1>Tweet yourself</h1>
+<div class="container">
+       {% block content %}My supper twitter{% endblock %}
+</div>
 
 
-<h1></h1>
+{% include 'snippets/js.html' %}
 
-       {% block content %}
-            treść
-       {% endblock %}
+</body>
+</html>

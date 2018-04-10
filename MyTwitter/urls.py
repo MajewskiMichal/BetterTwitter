@@ -3,7 +3,7 @@ from MyTwitter import views
 
 
 urlpatterns = [
-    url(r'^aaa$', ),
+    url(r'^$', views.SchoolView.as_view()),
 
 
 
