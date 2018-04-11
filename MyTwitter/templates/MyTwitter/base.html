@@ -1,19 +1,24 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
 
 <html lang="en">
 
 <head>
+
     <title>
-        {% block title %}BetterTwitter.com{% endblock %}
+        {% block head_title %}BetterTwitter.com{% endblock head_title %}
     </title>
+
     {% include 'snippets/css.html' %}
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/style.css' %}" />
 </head>
 <body>
 
 
-<h1>Tweet yourself</h1>
+<h1 style="color: black">Tweet yourself</h1>
 <div class="container">
-       {% block content %}My supper twitter{% endblock %}
+       {% block content %}{% endblock %}
 </div>
 
 
