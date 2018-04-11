@@ -4,6 +4,7 @@ from MyTwitter import views
 
 
 urlpatterns = [
-    url(r'^$', views.TweetViewAll.as_view()),
+    url(r'^$', views.TweetViewAll.as_view(), name='all-tweets'),
+    url(r'^create-tweet$', views.CreateTweetView.as_view(), name='create-tweet')
 
 ]

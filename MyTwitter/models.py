@@ -11,7 +11,7 @@ class Tweet(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.username
+        return self.content
 
 
 class Comments(models.Model):
@@ -22,7 +22,7 @@ class Comments(models.Model):
     tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.username
+        return self.comment
 
 
 class Message(models.Model):

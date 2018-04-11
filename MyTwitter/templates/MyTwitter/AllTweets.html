@@ -14,15 +14,14 @@
 <table>
     <tr>
         <th>User</th>
-
         <th>Tweet</th>
     </tr>
+     {% for tweet in tweets %}
     <tr>
-        {% for tweet in tweets %}
             <td>{{ user.username }}</td>
-            <td>{{ tweet.content }}
-        {% endfor %}
+            <td>{{ tweet.content }}</td>
     </tr>
+    {% endfor %}
 </table>
 
 <body>
