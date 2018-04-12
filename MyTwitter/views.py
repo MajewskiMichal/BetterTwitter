@@ -6,7 +6,7 @@ from django.views.generic import CreateView, ListView
 from django.contrib.auth import get_user_model, login, logout, authenticate
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+User = get_user_model()
 
 class TweetViewAll(LoginRequiredMixin, ListView):
     model = Tweet
@@ -57,7 +57,15 @@ class CreateUserView(CreateView):
         valid = super(CreateUserView, self).form_valid(form)
         username, password = \
             form.cleaned_data.get('username'), \
-            form.cleaned_data.get('password')
+            form.cleaned_data.get('password1')
         new_user = authenticate(username=username, password=password)
         login(self.request, new_user)
         return valid
+
+
+class UserTweetsView(View):
+    template_name = 'MyTwitter/user_tweet_list.html'
+
+    def get(self, request, user_id):
+        user = get_object_or_404(User, id=user_id )
+        return render(request, self.template_name, {'user': user})

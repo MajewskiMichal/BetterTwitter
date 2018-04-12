@@ -1,4 +1,3 @@
-
 {% extends 'MyTwitter/base.html' %}
 
 <head>
@@ -8,19 +7,18 @@
 <body>
 {% block content %}
 <a id="rightcorner" href="{% url 'logout' %}">Logout</a>
-<h1>Tweets</h1>
-<h2>{{ user.username }} logged in to the account</h2>
+<h1>{{ request.user.username }} logged in to the account</h1>
+<h2>Tweets posted by: {{ user.username }}</h2>
 <a href="{% url 'create-tweet' %}">Add Tweet</a><br>
+
 
 <table>
     <tr>
-        <th>User</th>
         <th>Tweet</th>
         <th>Date</th>
     </tr>
-     {% for tweet in tweets %}
+     {% for tweet in user.tweet_set.all %}
     <tr>
-        <td><a href="{{ tweet.get_absolute_url }}">{{ tweet.user.username }}</a></td>
         <td>{{ tweet.content }}</td>
         <td>{{ tweet.creation_date }}</td>
     </tr>
