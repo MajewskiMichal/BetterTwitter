@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.views import View
 from .models import Tweet
-from .forms import TweetForm, UserForm
+from .forms import TweetForm, UserForm, SignUpForm
 from django.views.generic import CreateView, ListView
-from django.contrib.auth import get_user_model, login, logout
+from django.contrib.auth import get_user_model, login, logout, authenticate
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -12,8 +12,6 @@ class TweetViewAll(LoginRequiredMixin, ListView):
     model = Tweet
     context_object_name = 'tweets'
     login_url = 'mytwitter/login'
-
-
 
 
 class CreateTweetView(CreateView):
@@ -41,3 +39,25 @@ class LoginView(View):
         else:
             return render(request, self.template_name, {'form': form})
 
+
+class LogoutView(View):
+
+    def get(self, request):
+        logout(request)
+        return redirect('/mytwitter/login')
+
+
+class CreateUserView(CreateView):
+    form_class = SignUpForm
+    success_url = '/mytwitter'
+    template_name = 'MyTwitter/create_user_form.html'
+
+    def form_valid(self, form):
+
+        valid = super(CreateUserView, self).form_valid(form)
+        username, password = \
+            form.cleaned_data.get('username'), \
+            form.cleaned_data.get('password')
+        new_user = authenticate(username=username, password=password)
+        login(self.request, new_user)
+        return valid

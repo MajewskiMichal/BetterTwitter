@@ -1,7 +1,10 @@
 from django import forms
-from django.forms import ModelForm, Textarea
-from django.contrib.auth import authenticate
+from django.forms import ModelForm, Textarea, PasswordInput
+from django.contrib.auth import authenticate, get_user_model
 from .models import Tweet
+from django.core.exceptions import ValidationError
+User = get_user_model()
+from django.contrib.auth.forms import UserCreationForm
 
 
 class TweetForm(ModelForm):
@@ -12,12 +15,12 @@ class TweetForm(ModelForm):
 
         widgets = {
                 'content': Textarea(attrs={'cols': 60, 'rows': 10}),
-    }
+        }
 
 
 class UserForm(forms.Form):
-    login = forms.CharField(max_length=20)
-    password = forms.CharField(widget=forms.PasswordInput, max_length=20)
+    login = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -38,5 +41,14 @@ class UserForm(forms.Form):
         return cleaned_data
 
 
-class
+class SignUpForm(UserCreationForm):
+    first_name = forms.CharField(max_length=30, required=True)
+    last_name = forms.CharField(max_length=30, required=True)
+    email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password' )
+
+
 

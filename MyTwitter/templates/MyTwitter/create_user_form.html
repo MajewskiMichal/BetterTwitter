@@ -9,11 +9,11 @@
 
 <form action="" method="post">
     {% csrf_token %}
-    {{ form }}
-<input type="submit" value="Zaloguj">
+    {{ form.as_p }}
+<input type="submit" value="Create">
 </form>
 
-<a href="{% url 'create-user' %}">Create account</a>
+
 
 
 {% endblock %}

@@ -9,6 +9,8 @@
 {% block content %}
 
 <h1>Tweets</h1>
+<a href="{% url 'create-tweet' %}">Add Tweet</a><br>
+<a href="{% url 'logout' %}">Logout</a>
 
 
 <table>
@@ -18,16 +20,12 @@
     </tr>
      {% for tweet in tweets %}
     <tr>
-            <td>{{ user.username }}</td>
+            <td>{{ tweet.user.username }}</td>
             <td>{{ tweet.content }}</td>
             <td>{{ tweet.creation_date }}</td>
     </tr>
     {% endfor %}
 </table>
-
-
-    <a href="{% url 'create-tweet' %}">Add Tweet</a>
-
 
 
 {% endblock content%}
