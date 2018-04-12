@@ -20,10 +20,14 @@
     <tr>
             <td>{{ user.username }}</td>
             <td>{{ tweet.content }}</td>
+            <td>{{ tweet.creation_date }}</td>
     </tr>
     {% endfor %}
 </table>
 
-<body>
+
+    <a href="{% url 'create-tweet' %}">Add Tweet</a>
+
+
 
 {% endblock content%}
