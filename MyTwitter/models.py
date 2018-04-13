@@ -17,13 +17,11 @@ class Tweet(models.Model):
     def get_absolute_url(self):
         return reverse('user-tweets', kwargs={'user_id': self.user.id})
 
-
-
     def __str__(self):
         return self.content
 
 
-class Comments(models.Model):
+class Comment(models.Model):
 
     comment = models.CharField(max_length=60)
     creation_date = models.DateTimeField(auto_now_add=True)

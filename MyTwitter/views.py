@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.views import View
-from .models import Tweet
-from .forms import TweetForm, UserForm, SignUpForm
+from .models import Tweet, Comment
+from .forms import TweetForm, UserForm, SignUpForm, CommentForm
 from django.views.generic import CreateView, ListView
 from django.contrib.auth import get_user_model, login, logout, authenticate
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 User = get_user_model()
+
 
 class TweetViewAll(LoginRequiredMixin, ListView):
     model = Tweet
@@ -69,3 +70,22 @@ class UserTweetsView(View):
     def get(self, request, user_id):
         user = get_object_or_404(User, id=user_id )
         return render(request, self.template_name, {'user': user})
+
+
+
+class CommentsView(View):
+    form_class = CommentForm
+    template_name = 'MyTwitter/comment_form.html'
+
+    def get(self, request, tweet_id):
+        comments = Comment.objects.filter(tweet=tweet_id)
+        tweet = get_object_or_404(Tweet, id=tweet_id)
+        return render(request,
+                      self.template_name,
+                      {
+                       'form': self.form_class(),
+                       'comments': comments,
+                       'tweet': tweet
+                        })
+
+

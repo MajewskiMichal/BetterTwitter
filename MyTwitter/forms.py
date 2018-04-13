@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.forms import ModelForm, Textarea, PasswordInput
 from django.contrib.auth import authenticate, get_user_model
-from .models import Tweet
+from .models import Tweet, Comment
 from django.core.exceptions import ValidationError
 User = get_user_model()
 
@@ -49,6 +49,13 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
+
+
+class CommentForm(ModelForm):
+
+    class Meta:
+        model = Comment
+        fields = ['comment']
 
 
 

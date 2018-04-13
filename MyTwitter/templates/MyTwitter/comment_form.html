@@ -1,0 +1,28 @@
+{% extends 'MyTwitter/base.html' %}
+
+{% block title %}
+    {{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+
+<a id="rightcorner" href="{% url 'logout' %}">Logout</a>
+<h1>{{ request.user.username }} logged in to the account</h1>
+<h2>Tweets posted by: {{ tweet.user.username }}</h2>
+    <h3>{{ tweet.content }}</h3>
+    {% for comment in comments %}
+        <li>{{ comment.comment }}, {{ comment.user.username }},
+            {{ comment.creation_date }}</li>
+        {% empty %}
+        No Comments
+    {% endfor %}
+
+
+<form action="" method="post"> {% csrf_token %}
+{{ form }}
+<input type="submit" value="Add Comment">
+</form>
+
+
+{% endblock %}

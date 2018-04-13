@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'logout/$', views.LogoutView.as_view(), name='logout'),
     url(r'add-user/$', views.CreateUserView.as_view(), name='create-user'),
     url(r'user-tweets/(?P<user_id>(\d)+)/$', views.UserTweetsView.as_view(), name='user-tweets'),
+    url(r'comments/(?P<tweet_id>(\d)+)/$', views.CommentsView.as_view(), name='comments')
 ]

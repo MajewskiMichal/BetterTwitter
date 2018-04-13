@@ -22,7 +22,9 @@
     <tr>
         <td><a href="{{ tweet.get_absolute_url }}">{{ tweet.user.username }}</a></td>
         <td>{{ tweet.content }}</td>
+        <td><a href="{% url 'comments' tweet_id=tweet.id %}">Comments</a></td>
         <td>{{ tweet.creation_date }}</td>
+
     </tr>
     {% endfor %}
 </table>
