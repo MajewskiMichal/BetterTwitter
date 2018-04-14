@@ -9,5 +9,8 @@ urlpatterns = [
     url(r'logout/$', views.LogoutView.as_view(), name='logout'),
     url(r'add-user/$', views.CreateUserView.as_view(), name='create-user'),
     url(r'user-tweets/(?P<user_id>(\d)+)/$', views.UserTweetsView.as_view(), name='user-tweets'),
-    url(r'comments/(?P<tweet_id>(\d)+)/$', views.CommentsView.as_view(), name='comments')
+    url(r'comments/(?P<tweet_id>(\d)+)/$', views.CommentsView.as_view(), name='comments'),
+    url(r'message/(?P<user_id>(\d)+)/$', views.CreateMessageView.as_view(), name='message'),
+    url(r'user-site/$', views.UserSiteView.as_view(), name='user-site'),
+    url(r'update-user/$', views.UserUpdateView.as_view(), name='update-user')
 ]

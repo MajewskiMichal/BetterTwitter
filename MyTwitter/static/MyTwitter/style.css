@@ -19,3 +19,30 @@ h2 {
 #rightcorner {
     float:right;
 }
+
+
+h3 {
+    color: greenyellow;
+}
+
+
+
+.button-link {
+	padding: 7px 10px;
+	background: #18c6df;
+	color: #FFF;
+}
+
+
+input {
+    color: #202129;
+    background-color: #A0DBE3;
+
+}
+
+input:hover {
+    color: #202129;
+    background-color: #18c6df;
+    opacity: 1;
+    }
+

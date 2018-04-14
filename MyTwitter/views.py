@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.views import View
-from .models import Tweet, Comment
-from .forms import TweetForm, UserForm, SignUpForm, CommentForm
-from django.views.generic import CreateView, ListView
+from .models import Tweet, Comment, Message
+from .forms import TweetForm, UserForm, SignUpForm, CommentForm, MessageForm
+from django.views.generic import CreateView, ListView, UpdateView
 from django.contrib.auth import get_user_model, login, logout, authenticate
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -17,7 +17,7 @@ class TweetViewAll(LoginRequiredMixin, ListView):
 
 class CreateTweetView(CreateView):
     form_class = TweetForm
-    template_name = 'MyTwitter/Tweet_form.html'
+    template_name = 'MyTwitter/tweet_form.html'
     success_url = '/mytwitter'
 
     def form_valid(self, form):
@@ -72,7 +72,6 @@ class UserTweetsView(View):
         return render(request, self.template_name, {'user': user})
 
 
-
 class CommentsView(View):
     form_class = CommentForm
     template_name = 'MyTwitter/comment_form.html'
@@ -87,5 +86,57 @@ class CommentsView(View):
                        'comments': comments,
                        'tweet': tweet
                         })
+
+    def post(self, request, tweet_id):
+        form = self.form_class(data=request.POST)
+        if form.is_valid():
+            user = self.request.user
+            tweet = get_object_or_404(Tweet, id=tweet_id)
+            comment = form.cleaned_data['comment']
+            Comment.objects.create(comment=comment, user=user, tweet=tweet)
+            return redirect('comments', tweet_id=tweet_id)
+        return redirect('comments', tweet_id=tweet_id)
+
+
+class CreateMessageView(View):
+    form_class = MessageForm
+    template_name = 'MyTwitter/message_form.html'
+
+    def get(self, request, user_id):
+        return render(request, self.template_name, {'form': self.form_class()})
+
+    def post(self, request, user_id):
+        form = self.form_class(data=request.POST)
+        if form.is_valid():
+            sender = self.request.user
+            receiver = User.objects.get(id=user_id)
+            Message.objects.create(subject=form.cleaned_data['subject'],
+                                   content=form.cleaned_data['content'],
+                                   _from=sender,
+                                   to=receiver)
+            return redirect('/mytwitter')
+        return render(request, self.template_name, {'form': form})
+
+
+class UserSiteView(ListView):
+    model = Tweet
+    template_name = 'MyTwitter/user_site.html'
+
+
+class UserUpdateView(UpdateView):
+    form_class = SignUpForm
+    template_name = 'MyTwitter/update_user_form.html'
+    success_url = '/mytwitter/login'
+
+    def get_object(self, queryset=None):
+        obj = self.request.user
+        return obj
+
+
+
+
+
+
+
 
 

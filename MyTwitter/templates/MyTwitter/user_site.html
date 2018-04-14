@@ -6,15 +6,13 @@
 
 <body>
 {% block content %}
+
 <a id="rightcorner" href="{% url 'logout' %}">Logout</a>
-<h3><a href="{%  url 'user-site' %}">{{ request.user.username }}</a> logged in to the account</h3>
-<h2>Tweets posted by: {{ user.username }}</h2>
+<h2>Your profile: {{ user.username }}</h2>
 <a class='button-link' href="{% url 'create-tweet' %}">Add Tweet</a>
 <a class='button-link' href="{% url 'all-tweets' %}">New Tweets</a>
-    {% if request.user.id != user.id %}
-<a class='button-link' href="{% url 'message' user_id=user.id %}">Send {{ user.username }} a message</a>
-    {% endif %}
-
+<a class='button-link' href="{% url 'update-user' %}">Update your details</a>
+{#<a class='button-link' href="{% url 'send-message' %}">Send Message</a>#}
 <table>
     <tr>
         <th>Tweet</th>
@@ -33,4 +31,4 @@
 
 
 
-{% endblock content%}
+{% endblock content %}
