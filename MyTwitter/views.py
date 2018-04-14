@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from .models import Tweet, Comment, Message
-from .forms import TweetForm, UserForm, SignUpForm, CommentForm, MessageForm
+from .forms import TweetForm, UserForm, SignUpForm, CommentForm, MessageForm, SendMessageForm
 from django.views.generic import CreateView, ListView, UpdateView
 from django.contrib.auth import get_user_model, login, logout, authenticate
 from django.shortcuts import render, redirect, get_object_or_404
@@ -131,6 +131,32 @@ class UserUpdateView(UpdateView):
     def get_object(self, queryset=None):
         obj = self.request.user
         return obj
+
+
+class SendMessageView(CreateView):
+    template_name = 'MyTwitter/send_message_form.html'
+    form_class = SendMessageForm
+    success_url = '/mytwitter/user-site'
+
+    def get_form_kwargs(self):
+        kwargs = super(SendMessageView, self).get_form_kwargs()
+        # Update the existing form kwargs dict with the request's user.
+        kwargs.update({"current_user": self.request.user})
+        return kwargs
+
+
+    def form_valid(self, form):
+        form.instance._from = self.request.user
+        return super().form_valid(form)
+
+
+
+
+
+
+
+
+
 
 
 

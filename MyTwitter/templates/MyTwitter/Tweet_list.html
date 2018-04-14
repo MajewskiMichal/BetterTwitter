@@ -9,10 +9,8 @@
 {% block content %}
 <a id="rightcorner" href="{% url 'logout' %}">Logout</a>
 <h1>Tweets</h1>
-    <h3><a href="{%  url 'user-site' %}">{{ user.username }}</a> logged in to the account</h3>
+<h3><a href="{%  url 'user-site' %}">{{ user.username }}</a> logged in to the account</h3>
 <a class='button-link' href="{% url 'create-tweet' %}">Add Tweet</a><br>
-
-
 
 <table>
     <tr>
@@ -28,14 +26,11 @@
         <td>{{ tweet.creation_date }}</td>
         <td>{{ tweet.comment_set.all.count }}</td>
         <td><a href="{% url 'comments' tweet_id=tweet.id %}">Comments</a></td>
-
-
     </tr>
     {% endfor %}
 </table>
 
 
-<footer></footer>
 
-
+</body>
 {% endblock content%}
