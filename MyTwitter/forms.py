@@ -69,16 +69,17 @@ class MessageForm(ModelForm):
         }
 
 
-class SendMessageForm(ModelForm):
-    to = forms.ModelChoiceField(label='friends', queryset=User.objects.all())
+
+class CorrespondenceMenu(forms.Form):
+    username = forms.ModelChoiceField(label='friends', queryset=User.objects.all())
+
+
 
     def __init__(self, current_user, *args, **kwargs):
-        super(SendMessageForm, self).__init__(*args, **kwargs)
-        self.fields['to'].queryset = self.fields['to'].queryset.exclude(id=current_user.id)
+        super(CorrespondenceMenu, self).__init__(*args, **kwargs)
+        self.fields['username'].queryset = self.fields['username'].queryset.exclude(id=current_user.id)
 
-    class Meta:
-        model = Message
-        fields = ['subject', 'content', 'to']
+
 
 
 

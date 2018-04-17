@@ -1,9 +1,22 @@
 from django.shortcuts import render
 from django.views import View
 from .models import Tweet, Comment, Message
-from .forms import TweetForm, UserForm, SignUpForm, CommentForm, MessageForm, SendMessageForm
-from django.views.generic import CreateView, ListView, UpdateView
-from django.contrib.auth import get_user_model, login, logout, authenticate
+from .forms import (TweetForm,
+                    UserForm,
+                    SignUpForm,
+                    CommentForm,
+                    MessageForm,
+                    CorrespondenceMenu
+                    )
+from django.views.generic import (CreateView,
+                                  ListView,
+                                  UpdateView
+                                  )
+from django.contrib.auth import (get_user_model,
+                                 login,
+                                 logout,
+                                 authenticate
+                                 )
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 User = get_user_model()
@@ -118,9 +131,19 @@ class CreateMessageView(View):
         return render(request, self.template_name, {'form': form})
 
 
-class UserSiteView(ListView):
-    model = Tweet
+class UserSiteView(View):
+    form_class = CorrespondenceMenu
     template_name = 'MyTwitter/user_site.html'
+
+    def get(self, request):
+        return render(request, self.template_name, {'form': self.form_class(self.request.user)})
+
+    def post(self, request):
+        form = self.form_class(self.request.user, data=request.POST)
+        if form.is_valid():
+            user = form.cleaned_data['username']
+            return redirect('message', user_id= user.id)
+        return render(request, self.template_name, {'form': form})
 
 
 class UserUpdateView(UpdateView):
@@ -133,21 +156,9 @@ class UserUpdateView(UpdateView):
         return obj
 
 
-class SendMessageView(CreateView):
-    template_name = 'MyTwitter/send_message_form.html'
-    form_class = SendMessageForm
-    success_url = '/mytwitter/user-site'
-
-    def get_form_kwargs(self):
-        kwargs = super(SendMessageView, self).get_form_kwargs()
-        # Update the existing form kwargs dict with the request's user.
-        kwargs.update({"current_user": self.request.user})
-        return kwargs
 
 
-    def form_valid(self, form):
-        form.instance._from = self.request.user
-        return super().form_valid(form)
+
 
 
 
