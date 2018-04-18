@@ -69,14 +69,11 @@ class MessageForm(ModelForm):
         }
 
 
-
-class CorrespondenceMenu(forms.Form):
+class CorrespondenceForm(forms.Form):
     username = forms.ModelChoiceField(label='friends', queryset=User.objects.all())
 
-
-
     def __init__(self, current_user, *args, **kwargs):
-        super(CorrespondenceMenu, self).__init__(*args, **kwargs)
+        super(CorrespondenceForm, self).__init__(*args, **kwargs)
         self.fields['username'].queryset = self.fields['username'].queryset.exclude(id=current_user.id)
 
 

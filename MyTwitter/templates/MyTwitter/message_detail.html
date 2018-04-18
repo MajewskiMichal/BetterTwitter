@@ -1,0 +1,28 @@
+{% extends 'MyTwitter/base.html' %}
+
+{% block title %}
+    {{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+<h3>Message from {{ object.who_sent.username }} to {{ object.to.username }}</h3>
+
+<table>
+<tr>
+    <th>subject</th>
+    <th>content</th>
+</tr>
+<tr>
+    <td>{{ object.subject }}</td>
+    <td>{{ object.content }}</td>
+</tr>
+</table>
+
+{% if object.who_sent == request.user %}
+    <a class='button-link' href="{% url 'correspondence' user_id=object.to.id %}">Back</a>
+{% else %}
+    <a class='button-link' href="{% url 'correspondence' user_id=object.who_sent.id %}">Back</a>
+{% endif %}
+
+{% endblock %}

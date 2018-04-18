@@ -37,7 +37,7 @@ class Message(models.Model):
     subject = models.CharField(max_length=150)
     content = models.TextField()
     to = models.ForeignKey(User, related_name='receiver', on_delete=models.CASCADE)
-    _from = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE)
+    who_sent = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE)
     date_sent = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
     time_read = models.DateTimeField(null=True)

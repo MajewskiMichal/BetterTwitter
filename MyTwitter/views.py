@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.db.models import Q
 from django.views import View
 from .models import Tweet, Comment, Message
 from .forms import (TweetForm,
@@ -6,11 +6,12 @@ from .forms import (TweetForm,
                     SignUpForm,
                     CommentForm,
                     MessageForm,
-                    CorrespondenceMenu
+                    CorrespondenceForm
                     )
 from django.views.generic import (CreateView,
                                   ListView,
-                                  UpdateView
+                                  UpdateView,
+                                  DetailView
                                   )
 from django.contrib.auth import (get_user_model,
                                  login,
@@ -111,28 +112,8 @@ class CommentsView(View):
         return redirect('comments', tweet_id=tweet_id)
 
 
-class CreateMessageView(View):
-    form_class = MessageForm
-    template_name = 'MyTwitter/message_form.html'
-
-    def get(self, request, user_id):
-        return render(request, self.template_name, {'form': self.form_class()})
-
-    def post(self, request, user_id):
-        form = self.form_class(data=request.POST)
-        if form.is_valid():
-            sender = self.request.user
-            receiver = User.objects.get(id=user_id)
-            Message.objects.create(subject=form.cleaned_data['subject'],
-                                   content=form.cleaned_data['content'],
-                                   _from=sender,
-                                   to=receiver)
-            return redirect('/mytwitter')
-        return render(request, self.template_name, {'form': form})
-
-
 class UserSiteView(View):
-    form_class = CorrespondenceMenu
+    form_class = CorrespondenceForm
     template_name = 'MyTwitter/user_site.html'
 
     def get(self, request):
@@ -142,7 +123,7 @@ class UserSiteView(View):
         form = self.form_class(self.request.user, data=request.POST)
         if form.is_valid():
             user = form.cleaned_data['username']
-            return redirect('message', user_id= user.id)
+            return redirect('correspondence', user_id=user.id)
         return render(request, self.template_name, {'form': form})
 
 
@@ -154,6 +135,42 @@ class UserUpdateView(UpdateView):
     def get_object(self, queryset=None):
         obj = self.request.user
         return obj
+
+
+class CorrespondenceView(View):
+    form_class = MessageForm
+    template_name = 'MyTwitter/message_form.html'
+
+    def get(self, request, user_id):
+        sender = self.request.user
+        receiver = User.objects.get(id=user_id)
+        messages = Message.objects.filter(Q(who_sent=sender, to=receiver) | Q(who_sent=receiver, to=sender))
+        return render(request, self.template_name, {'form': self.form_class(),
+                                                    'receiver': receiver,
+                                                    'messages': messages,
+                                                    })
+
+    def post(self, request, user_id):
+        form = self.form_class(data=request.POST)
+        if form.is_valid():
+            sender = self.request.user
+            receiver = User.objects.get(id=user_id)
+            Message.objects.create(subject=form.cleaned_data['subject'],
+                                   content=form.cleaned_data['content'],
+                                   who_sent=sender,
+                                   to=receiver)
+            return redirect('correspondence', user_id=receiver.id)
+        return render(request, self.template_name, {'form': form})
+
+
+class MessageView(DetailView):
+    model = Message
+    pk_url_kwarg = 'msg_id'
+
+
+
+
+
 
 
 

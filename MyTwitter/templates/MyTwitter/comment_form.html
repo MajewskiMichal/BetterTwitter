@@ -9,7 +9,7 @@
 
 <a id="rightcorner" href="{% url 'logout' %}">Logout</a>
 <h3>{{ request.user.username }} logged in to the account</h3>
-<a href="{% url 'all-tweets' %}">New Tweets</a><br>
+<a href="{% url 'all-tweets' %}">Wall</a><br>
 <h2>Tweet posted by: {{ tweet.user.username }}</h2>
 <strong>{{ tweet.content }}</strong><br>
 

@@ -6,12 +6,36 @@
 
 
 {% block content %}
+<h3>Correspondence with {{ receiver.username }}</h3>
+
+<table>
+        <tr>
+            <th>from </th>
+            <th>subject</th>
+            <th>content</th>
+            <th>sent</th>
+            <th>read</th>
+        </tr>
+        {% for msg in messages %}
+        <tr>
+            {% if msg.who_sent == request.user %}
+            <td>You</td>
+            {% else %}
+            <td>{{ msg.who_sent.username }}</td>
+            {% endif %}
+            <td><a href="{% url 'message' msg_id=msg.id %}">{{ msg.subject }}</a></td>
+            <td>{{ msg.content|truncatechars:10 }}</td>
+            <td>{{ msg.date_sent }}</td>
+            <td>{{ msg.time_read }}</td>
+        </tr>
+         {% endfor %}
+</table>
 
 <form action="" method="post"> {% csrf_token %}
 {{ form }}
 <input type="submit" value="Send">
 </form>
 
-<a class='button-link' href="{% url 'user-tweets' user_id=user.id %}">Back</a>
+<a class='button-link' href="{% url 'user-site' %}">Back</a>
 
 {% endblock %}
