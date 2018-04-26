@@ -11,7 +11,8 @@ from .forms import (TweetForm,
 from django.views.generic import (CreateView,
                                   ListView,
                                   UpdateView,
-                                  DetailView
+                                  DetailView,
+                                  RedirectView
                                   )
 from django.contrib.auth import (get_user_model,
                                  login,
@@ -20,6 +21,7 @@ from django.contrib.auth import (get_user_model,
                                  )
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 User = get_user_model()
 
 
@@ -27,6 +29,54 @@ class TweetViewAll(LoginRequiredMixin, ListView):
     model = Tweet
     context_object_name = 'tweets'
     login_url = 'mytwitter/login'
+
+
+class TweetLikeToggle(RedirectView):
+
+    def get(self, *args, **kwargs):
+        tweet_id = self.kwargs.get("tweet_id")
+        print(tweet_id)
+        tweet = get_object_or_404(Tweet, id=tweet_id)
+        user = self.request.user
+        if user.is_authenticated():
+            if user in tweet.likes.all():
+                tweet.likes.remove(user)
+            else:
+                tweet.likes.add(user)
+        return HttpResponseRedirect(self.request.META.get('HTTP_REFERER', '/'))
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+from django.contrib.auth.models import User
+
+
+class TweetLikeAPIToggle(APIView):
+
+    authentication_classes = (authentication.SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, tweet_id=None, format=None):
+        # tweet_id = self.kwargs.get("tweet_id")
+        print(tweet_id)
+        tweet = get_object_or_404(Tweet, id=tweet_id)
+        user = self.request.user
+        updated = False
+        liked = False
+        if user.is_authenticated():
+            if user in tweet.likes.all():
+                liked = False
+                tweet.likes.remove(user)
+            else:
+                liked = True
+                tweet.likes.add(user)
+            updated = True
+        data = {
+            'updated': updated,
+            'liked': liked
+        }
+        return Response(data)
 
 
 class CreateTweetView(CreateView):

@@ -34,6 +34,7 @@ h3 {
 }
 
 
+
 input {
     color: #202129;
     background-color: #A0DBE3;
@@ -45,4 +46,24 @@ input:hover {
     background-color: #18c6df;
     opacity: 1;
     }
+
+.like-button {
+    padding: 4px 7px;
+	background: #18c6df;
+	color: #FFF;
+}
+
+
+input {
+    color: #202129;
+    background-color: #A0DBE3;
+
+}
+
+input:hover {
+    color: #202129;
+    background-color: #18c6df;
+    opacity: 1;
+    }
+
 
