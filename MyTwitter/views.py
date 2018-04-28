@@ -28,7 +28,7 @@ User = get_user_model()
 class TweetViewAll(LoginRequiredMixin, ListView):
     model = Tweet
     context_object_name = 'tweets'
-    login_url = 'mytwitter/login'
+    login_url = '/mytwitter/login'
 
 
 class TweetLikeToggle(RedirectView):
@@ -216,6 +216,8 @@ class CorrespondenceView(View):
 class MessageView(DetailView):
     model = Message
     pk_url_kwarg = 'msg_id'
+
+
 
 
 

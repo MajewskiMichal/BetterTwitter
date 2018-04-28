@@ -1,6 +1,6 @@
 table {
   border-collapse: separate;
-  border-spacing: 50px 0;
+  border-spacing: 40px 0;
 }
 
 td {
@@ -22,7 +22,7 @@ h2 {
 
 
 h3 {
-    color: greenyellow;
+    color: whitesmoke;
 }
 
 
@@ -66,4 +66,6 @@ input:hover {
     opacity: 1;
     }
 
+#read {
 
+}

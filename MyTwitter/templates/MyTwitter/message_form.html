@@ -23,7 +23,7 @@
             {% else %}
             <td>{{ msg.who_sent.username }}</td>
             {% endif %}
-            <td><a href="{% url 'message' msg_id=msg.id %}">{{ msg.subject }}</a></td>
+            <td><a id=read data-read='{{ msg.is_read }}' href="{% url 'message' msg_id=msg.id %}">{{ msg.subject }}</a></td>
             <td>{{ msg.content|truncatechars:10 }}</td>
             <td>{{ msg.date_sent }}</td>
             <td>{{ msg.time_read }}</td>

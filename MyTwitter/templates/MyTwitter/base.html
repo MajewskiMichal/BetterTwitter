@@ -17,7 +17,7 @@
 
 
 <h1 style="color: black">Tweet yourself</h1>
-<div class="container">
+<div class="alert alert-primary" role="alert">
        {% block content %}{% endblock %}
 </div>
 
@@ -30,7 +30,7 @@
           btn.attr('data-likes', newCount)
           btn.text(newCount + " " + verb)
       }
-      $(".like-button").click(function(e){
+      $(".btn").click(function(e){
         e.preventDefault()
         var this_ = $(this)
         var likeUrl = this_.attr("data-href")
@@ -49,7 +49,6 @@
                   updateText(this_, addLike, "Unlike")
               } else {
                   updateText(this_, removeLike, "Like")
-                  // remove one like
               }
             }, error: function(error){
               console.log(error)
@@ -60,6 +59,39 @@
 
       })
   })
+</script>
+
+
+<script>
+    $(document).ready(function(){
+        function updateRead(link, verb) {
+            link.attr('data-read', verb)
+            link.text(verb)
+        }
+     $('#read').click(function (e) {
+         e.preventDefault()
+         var msg_url = this.attr('href')
+         var read = this.attr('data-read')
+         if(msg_url){
+             $.ajax({
+                 url: msg_url,
+                 method: 'GET',
+                 data: {},
+                 sucess: function(data){
+                     console.log(data)
+                     if (data.is_read === false){
+                         updateRead(this, 'Read')
+                         read = true
+                     }
+
+                 }
+             })
+         }
+     })
+
+    })
+
+
 </script>
 
 <script>

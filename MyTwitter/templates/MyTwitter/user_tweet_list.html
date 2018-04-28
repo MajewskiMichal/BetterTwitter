@@ -26,7 +26,7 @@
     <tr>
         <td>{{ tweet.content }}</td>
         <td>{{ tweet.creation_date }}</td>
-        <td><a class="like-button" data-href='{{ tweet.get_like_api_url }}' data-likes="{{ tweet.likes.count }}" href='{{ tweet.get_like_url }}'>{{ tweet.likes.count }} Likes</a></td>
+        <td><a class="btn btn-primary" data-href='{{ tweet.get_like_api_url }}' data-likes="{{ tweet.likes.count }}" href='{{ tweet.get_like_url }}'>{{ tweet.likes.count }} Likes</a></td>
         <td>{{ tweet.comment_set.all.count }}</td>
         <td><a href="{% url 'comments' tweet_id=tweet.id %}">Comments</a></td>
     </tr>
