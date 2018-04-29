@@ -26,6 +26,8 @@ class TweetAdmin(admin.ModelAdmin):
         html += '</select>'
         return format_html(html)
 
+
+
         # return ','.join(obj.comment_set.all().values_list('comment', flat=True))
 
 
