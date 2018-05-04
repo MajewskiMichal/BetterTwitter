@@ -14,6 +14,7 @@ So far application provides:
 
 To be developed:
 - making it look nicer
+- friends
 - code optimization
 - read/unread private messages
 
