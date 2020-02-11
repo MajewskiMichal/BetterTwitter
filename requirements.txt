@@ -1,4 +1,4 @@
-Django==1.11.4
+Django==1.11.28
 django-debug-toolbar==1.7
 django-extensions==1.8.1
 bpython==0.16
